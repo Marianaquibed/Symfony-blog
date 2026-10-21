@@ -48,6 +48,6 @@ final class PageController extends AbstractController
     public function thankyou(): Response
     {
         return $this->render('page/thankyou.html.twig', []);
-    }
 
+    }
 }
