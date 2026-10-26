@@ -36,10 +36,8 @@ class ImageFormType extends AbstractType
             'class' => Category::class,
             'choice_label' => 'name'))
         ->add('Send', SubmitType::class, ['attr' => ['class'=>'pull-right btn btn-lg sr-button']]);
-    ;
-}
-
-
+        ;
+    }
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

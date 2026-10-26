@@ -10,7 +10,9 @@ use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Post;
 use App\Form\PostFormType;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_USER')]
 final class PostController extends AbstractController
 {
     #[Route('/blog/new', name: 'new_post')]
@@ -32,7 +34,6 @@ final class PostController extends AbstractController
 
             $entityManager = $doctrine->getManager();    
             $entityManager->persist($post);
-            $entityManager->flush();
             return $this->render('blog/new_post.html.twig', array(
                 'form' => $form->createView()    
             ));
