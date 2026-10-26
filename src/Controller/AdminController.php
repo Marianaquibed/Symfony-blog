@@ -24,6 +24,15 @@ class AdminController extends AbstractController
     #[Route('/admin/images', name: 'app_images')]
     public function images(ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger): Response
     {
+    $repositorio = $doctrine->getRepository(Image::class);
+    $images = $repositorio->findAll();
+
+    $image = new Image();
+    $form = $this->createForm(ImageFormType::class, $image);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+
         $image = new Image();
         $form = $this->createForm(ImageFormType::class, $image);
         $form->handleRequest($request);
@@ -64,9 +73,13 @@ class AdminController extends AbstractController
             $entityManager->persist($image);
             $entityManager->flush();
         }
-        return $this->render('admin/images.html.twig', array(
-                        'form' => $form->createView()
-                    ));
+         return $this->redirectToRoute('app_images');
+    }
+
+    return $this->render('admin/images.html.twig', [
+        'form' => $form->createView(),
+        'images' => $images,
+    ]);
     }
     #[Route('/admin/categories', name: 'app_categories')]
     public function categories(ManagerRegistry $doctrine, Request $request): Response
