@@ -89,5 +89,14 @@ final class PostController extends AbstractController
             'post' => $post,
         ]);
     }
+    #[Route('/blog/{page}', name: 'blog', requirements: ['page' => '\d+'])]
+    public function index(ManagerRegistry $doctrine, int $page = 1): Response
+    {
+        $repository = $doctrine->getRepository(Post::class);
+        $posts = $repository->findAll($page);
 
+        return $this->render('blog/blog.html.twig', [
+            'posts' => $posts,
+        ]);
+    }
 }
