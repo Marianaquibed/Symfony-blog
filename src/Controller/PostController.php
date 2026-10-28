@@ -75,18 +75,15 @@ final class PostController extends AbstractController
             'form' => $form->createView()    
         ]);
     }
-  #[Route('/single_post/{slug}', name: 'single_post')]
-    public function post(ManagerRegistry $doctrine, string $slug): Response
+    #[Route('/single_post/{slug}', name: 'single_post')]
+    public function post(ManagerRegistry $doctrine, $slug): Response
     {
-        $repositorio = $doctrine->getRepository(Post::class);
-        $post = $repositorio->findOneBy(['slug' => $slug]);
-
-        if (!$post) {
-            throw $this->createNotFoundException('El post no existe.');
-        }
-
+        $repository = $doctrine->getRepository(Post::class);
+        $post = $repository->findOneBy(["slug"=>$slug]);
+        $recents = $repository->findRecents();
         return $this->render('blog/single_post.html.twig', [
             'post' => $post,
+            'recents' => $recents
         ]);
     }
     #[Route('/blog/{page}', name: 'blog', requirements: ['page' => '\d+'])]
