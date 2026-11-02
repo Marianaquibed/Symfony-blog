@@ -22,6 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 #[IsGranted('ROLE_USER')]
 final class PostController extends AbstractController
 {
+    private const POSTS_PER_PAGE = 1;
     #[Route('/blog/new', name: 'new_post')]
     public function newPost(ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger): Response
     {
@@ -76,7 +77,6 @@ final class PostController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('new_post');
         }
-
         return $this->render('blog/new_post.html.twig', [
             'form' => $form->createView()    
         ]);
@@ -106,17 +106,59 @@ final class PostController extends AbstractController
             'commentForm' => $form->createView()
         ]);
     }
-    #[Route('/blog/{page}', name: 'blog', requirements: ['page' => '\d+'])]
+    
+    #[Route('/blog/{page}', name: 'blog')]
     public function index(ManagerRegistry $doctrine, int $page = 1): Response
     {
+        
+        $page = max(1, $page);
+
         $repository = $doctrine->getRepository(Post::class);
-        $posts = $repository->findAll();
+        //Aquí obtenemos los datos con el método creado en el repositorio
+        $posts = $repository->findPaginados($page, self::POSTS_PER_PAGE);
         $recents = $repository->findRecents();
+
+        $total = count($posts);
+        $totalPages = max(1, (int) ceil($total / self::POSTS_PER_PAGE));
+
+        // Si piden una página que no existe, redirigimos a la última
+        if ($page > $totalPages) {
+            return $this->redirectToRoute('blog', ['page' => $totalPages]);
+        }
 
         return $this->render('blog/blog.html.twig', [
             'posts' => $posts,
             'recents' => $recents,
+            'page'       => $page,
+            'totalPages' => $totalPages,
+            'total'        => $total,
         ]);
     }
+    #[Route('/blog/buscar/{page}', name: 'blog_buscar')]
+    public function buscar(ManagerRegistry $doctrine, Request $request, int $page = 1): Response
+    {
+    $page = max(1, $page);
 
+    $repository = $doctrine->getRepository(Post::class);
+    $searchTerm = $request->query->get('searchTerm', '');
+    $posts = $repository->findBuscadosPaginados($searchTerm, $page, self::POSTS_PER_PAGE);
+    $recents = $repository->findRecents();
+
+    $total = count($posts);
+    $totalPages = max(1, (int) ceil($total / self::POSTS_PER_PAGE));
+
+    // Si piden una página que no existe, redirigimos a la última (conservando la búsqueda)
+    if ($page > $totalPages) {
+        return $this->redirectToRoute('blog_buscar', ['page' => $totalPages, 'searchTerm' => $searchTerm]);
+    }
+
+    return $this->render('blog/blog.html.twig', [
+        'posts'      => $posts,
+        'recents'    => $recents,
+        'searchTerm' => $searchTerm,
+        'page'       => $page,
+        'totalPages' => $totalPages,
+        'total'      => $total,
+    ]);
+    }
 }

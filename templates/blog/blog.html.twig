@@ -3,27 +3,34 @@
 {% block body %}
 
 <!-- Principal Content Start -->
-   <div id="blog">
-     <div class="container">
-      <div class="row">
+    <div id="blog">
+      <div class="container">
+        <div class="row">
 
-      <!-- Blocks of Posts -->
+        <!-- Blocks of Posts -->
         <div class="col-xs-12 col-sm-8 row">
-                {% for post in posts %}
-                {{ include ('partials/_post.html.twig', {'post': post}) }}
-                {% endfor %}               
-              <div class="col-xs-12 col-sm-12"></div>
-              <nav class="text-left">
-                <ul class="pagination">
-                  <li class="active"><a href="#">1</a></li>
-                  <li><a href="#">2</a></li>
-                  <li><a href="#">3</a></li>
-                  <li><a href="#" aria-label="suivant">
-                    <span aria-hidden="true">&raquo;</span>
-                  </a></li>
-                </ul>
-              </nav>
+          {% for post in posts %}
+            {{ include ('partials/_post.html.twig', {'post': post}) }}
+          {% endfor %}               
+          {% if searchTerm is defined %}
+            {{ include('partials/_paginador.html.twig', {
+                'page': page,
+                'totalPages': totalPages,
+                'ruta': 'blog_buscar',
+                'parametros': {'searchTerm': searchTerm}
+              }) }}
+          {% else %}
+            {{ include('partials/_paginador.html.twig', {
+                'page': page,
+                'totalPages': totalPages,
+                'ruta': 'blog'
+              }) }}
+          {% endif %}
         </div>
+        </div>
+      </div>
+    </div>
+
       <!-- End of Blog Post -->  
 
       <!-- Side bar -->  

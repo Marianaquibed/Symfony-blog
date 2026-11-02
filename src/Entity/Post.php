@@ -23,7 +23,7 @@ class Post
     private ?string $content = null;
 
     #[ORM\Column]
-    private ?\DateTime $publishedAt = null;
+    private ?\DateTime $PublishedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'posts')]
     private ?User $postUser = null;
@@ -77,12 +77,12 @@ class Post
 
     public function getPublishedAt(): ?\DateTime
     {
-        return $this->publishedAt;
+        return $this->PublishedAt;
     }
 
     public function setPublishedAt(\DateTime $publishedAt): static
     {
-        $this->publishedAt = $publishedAt;
+        $this->PublishedAt = $publishedAt;
 
         return $this;
     }
@@ -148,7 +148,7 @@ class Post
     }
     public function __construct()
     {
-        $this->publishedAt = new \DateTime();
+        $this->PublishedAt = new \DateTime();
         $this->comments = new ArrayCollection();
     }
 
