@@ -1,3 +1,16 @@
-<div id="form" class="col-xs-12 col-sm-6 col-sm-push-3">
-{{ form(commentForm, {'attr': {'class':'form-horizontal'}}) }}
+<div class="comment {% if loop.index0 is odd %}alt-comment{% endif %}">
+    <h4>{{ comment.name }}</h4>
+    
+    <span>
+        <i class="fa fa-star sr-icons"></i>
+        <i class="fa fa-star sr-icons"></i>
+        <i class="fa fa-star sr-icons"></i>
+        <i class="fa fa-star sr-icons"></i>
+        <i class="fa fa-star sr-icons"></i>
+    </span>
+    
+    <p class="time">{{ comment.publishedAt|date('h:i A') }}</p>
+    <hr>
+    
+    <p>{{ comment.text }}</p>
 </div>

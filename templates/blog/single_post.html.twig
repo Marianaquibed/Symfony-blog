@@ -3,7 +3,7 @@
 {% block body %}
 
     <div id="single">
-     <div class="container">
+    <div class="container">
 
     <!-- Full Article -->
       <div class="row">
@@ -28,6 +28,7 @@
             {% for recent in recents %}
             <div class="new {% if loop.first %}new1{% endif %}">
                 {{ include('partials/_recent_post.html.twig', {'recent': recent}) }}
+            </div>
             {% endfor %}
             </div>
         </div>
@@ -36,8 +37,22 @@
     <!-- End of Full Article -->
 
     <!-- Comments -->
-       {{ include ('partials/_post_comments.html.twig') }}
-    <!-- End of Comments -->  
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 block2">
+            
+            {% for comment in post.comments %}
+                {{ include('partials/_post_comments.html.twig', {'comment': comment}) }}
+            {% endfor %}
+
+            <hr class="line">
+            
+            <div id="form" class="col-xs-12 col-sm-6 col-sm-push-3">
+                {{ form(commentForm, {'attr': {'class': 'form-horizontal'}}) }}
+            </div>
+            
+        </div>
+    </div>
+<!-- End of Comments -->  
      </div>
     </div>
 

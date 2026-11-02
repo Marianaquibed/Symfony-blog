@@ -742,7 +742,7 @@ img{
 }
 #blog .post-heading,
 .post-heading {
-    position: relative; /* <-- Esto es fundamental para que el span se ancle a la esquina de la imagen */
+    position: relative;
 }
 
 #blog .post-heading span,
@@ -1214,3 +1214,29 @@ img{
 	margin-bottom: 20px;
 }
 /*-- End of Contact Page Stylesheet --*/
+
+/* Estilos para el contenedor del post dentro de la vista #single */
+#single .new .post {
+    background-color: #ffffff;
+    border-bottom: solid 2px rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+}
+
+#single .new .post-body {
+    padding: 10px 15px 15px 15px;
+}
+
+#single .new .post-body h4 {
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+#single .new .post-body h4 a {
+    color: #373d54;
+    text-decoration: none;
+}
+
+#single .new .post-body h4 a:hover {
+    color: #151b32;
+}
