@@ -740,18 +740,22 @@ img{
 	color: rgba(0,0,0,0.5);
 	margin-bottom: 60px;
 }
-#blog .post-heading{
-	color: white;
-	position: relative;
+#blog .post-heading,
+.post-heading {
+    position: relative; /* <-- Esto es fundamental para que el span se ancle a la esquina de la imagen */
 }
-#blog .post-heading span{
-	text-align: center;
-	background-color: #31b0d5;
-	font-size: 13px;
-	font-weight: bold;
-	color: white;
-	padding: 3%;
-	position: absolute;
+
+#blog .post-heading span,
+.post-heading span {
+    text-align: center;
+    background-color: #31b0d5;
+    font-size: 13px;
+    font-weight: bold;
+    color: white;
+    padding: 3%;
+    position: absolute;
+    top: 0;  
+    left: 0; 
 }
 
 #blog .post-body{
@@ -931,12 +935,13 @@ img{
 	color: #373d54;
 }
 	
-#single .subtitle{
-	margin: 0 auto;
-	width: 5%;
-	float: left;
-	height: 4px;
-	background-color: #d43f3a; 
+#single .subtitle1{
+    margin: 5px 0 15px 0; 
+    width: 40px;          
+    height: 4px;
+    background-color: #d43f3a; 
+    display: block;       
+    clear: both; 
 }
 @media(max-width: 500px){
   #single .subtitle{

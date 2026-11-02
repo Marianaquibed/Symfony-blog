@@ -22,11 +22,14 @@
         </ul>
         </div>
         <div class="col-xs-12 col-sm-3">
-            <h4>Recent Post</h4>
+            <h4>Recent Posts</h4>
             <hr class="subtitle1">
+
             {% for recent in recents %}
+            <div class="new {% if loop.first %}new1{% endif %}">
                 {{ include('partials/_recent_post.html.twig', {'recent': recent}) }}
             {% endfor %}
+            </div>
         </div>
     </div>
     </div>

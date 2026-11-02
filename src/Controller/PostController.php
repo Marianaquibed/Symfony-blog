@@ -90,10 +90,13 @@ final class PostController extends AbstractController
     public function index(ManagerRegistry $doctrine, int $page = 1): Response
     {
         $repository = $doctrine->getRepository(Post::class);
-        $posts = $repository->findAll($page);
+        $posts = $repository->findAll();
+        $recents = $repository->findRecents();
 
         return $this->render('blog/blog.html.twig', [
             'posts' => $posts,
+            'recents' => $recents,
         ]);
     }
+
 }
