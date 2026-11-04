@@ -16,9 +16,33 @@
         <h4>By {{ post.postUser.name }}</h4>
         <hr>
         <ul class="list-inline">
-          <li>{{ post.publishedAt|date('d') }} {{ post.publishedAt|date('F') }} |</li>
-          <li><a class="page-scroll" href="#form">COMMENT</a> |</li>
-          <li><a href="">LIKE</a></li>
+            <li>{{ post.publishedAt|date('d') }} {{ post.publishedAt|date('F') }} |</li>
+            <li><a class="page-scroll" href="#form">COMMENT</a> <i class="fa fa-comments sr-icons"></i> {{post.numComments}} |</li>
+            <script type='text/javascript'>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const likeLink = document.querySelector('a[href="{{ path('post_like', {slug: post.slug}) }}"]');
+                    // Hay que coger el id 'likes' para poder cambiar luego el valor al número de likes actual
+                    const likesSpan = document.querySelector('#likes');
+                    likeLink.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        fetch(likeLink.href, {
+                            method: 'POST',
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                likesSpan.innerHTML = " " + data.likes;
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                    });
+                });
+            </script>
+            <li><a href="{{ path('post_like', {slug: post.slug}) }}">LIKE</a> <i class="fa fa-heart sr-icons"></i> {{post.numLikes}}</li>
         </ul>
         </div>
         <div class="col-xs-12 col-sm-3">

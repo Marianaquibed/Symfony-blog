@@ -17,7 +17,7 @@ use App\Entity\Comment;
 use App\Form\CommentFormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[IsGranted('ROLE_USER')]
 final class PostController extends AbstractController
@@ -160,5 +160,20 @@ final class PostController extends AbstractController
         'totalPages' => $totalPages,
         'total'      => $total,
     ]);
+    }
+    #[Route('/single_post/{slug}/like', name: 'post_like')]
+    public function like(ManagerRegistry $doctrine, $slug): JsonResponse
+    {
+        $repository = $doctrine->getRepository(Post::class);
+        $post = $repository->findOneBy(["slug"=>$slug]);
+        if ($post){
+            $post->setNumLikes($post->getNumLikes() + 1);
+            $entityManager = $doctrine->getManager();    
+            $entityManager->persist($post);
+            $entityManager->flush();
+        }
+        $data = ['success' => true, 'numLikes' => $post->getNumLikes()];
+        return $this->json($data);
+
     }
 }
