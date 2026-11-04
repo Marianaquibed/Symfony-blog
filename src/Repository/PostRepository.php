@@ -73,14 +73,14 @@ class PostRepository extends ServiceEntityRepository
         return new Paginator($query, false);
     }
 
-    /**
+   /**
      * Página $page de los posts cuyo contenido contiene $searchTerm.
      * count() sobre el resultado devuelve el total de coincidencias.
      */
     public function findBuscadosPaginados(string $searchTerm, int $page, int $perPage): Paginator
     {
         $query = $this->createQueryBuilder('p')
-            ->andWhere('p.Content LIKE :val')
+            ->andWhere('p.content LIKE :val')
             ->setParameter('val', '%'.$searchTerm.'%')
             ->orderBy('p.PublishedAt', 'DESC')
             ->setFirstResult(($page - 1) * $perPage)
