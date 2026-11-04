@@ -51,6 +51,9 @@
                 <li class="{{ (app.request.attributes.get('_route') == 'app_login')  ? 'active': ''}} lien"><a href="{{ path('app_login') }}"><i class="fa fa-sign-in sr-icons"></i> Login</a></li>	
                 <li class="{{ (app.request.attributes.get('_route') == 'app_register')  ? 'active': ''}} "><a href="{{ path('app_register') }}"><i class="fa fa-user-secret sr-icons"></i> Register</a></li>
               {% endif %}
+              {% if app.user %}
+                <li><a href="{{ path('new_post') }}"><i class="fa fa-plus-square sr-icons"></i> New post</a></li>
+              {% endif %}
             </ul>
          </div>
      </div>
